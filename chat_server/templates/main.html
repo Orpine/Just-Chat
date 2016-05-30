@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width-device-width, inital-scale=1">
+    <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/bootstrap-theme.min.css">
+    <style>
+        body {
+            position: absolute;
+            height: 100%;
+            width: 100%;
+        }
+        ul {
+            list-style: none;
+        }        
+        header>h1, footer>h1 {
+            text-align: center;
+            font-size: 18px;
+            font-weight: 400;
+            -webkit-box-flex: 10;
+        }
+        textarea {
+            border: 0;
+        }
+        header {
+            -webkit-user-select: none;
+        }
+        
+        nav ul {
+            height: 50px;
+        }
+        
+        
+        #wrap {
+            width: 1000px;
+            height: 100%;
+            margin: 0 auto;
+        }
+        .my-panel {
+/*             display: none; */
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+             left: 0;
+        }
+        .panel-body-container {
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            top: 0;
+            width: 100%;
+        }
+        .panel-body {
+            padding: 0;
+            width: 100%;
+            min-height: 100%;
+            position: relative;
+        }
+        .my-panel header {
+            width: 100%;
+            border-radius: 5px 5px 0 0;
+            display: -webkit-box;
+            height: 45px;
+            -webkit-box-orient: horizontal;
+            position: relative;
+            z-index: 100;
+        }
+        .my-panel footer {
+            width: 100%;
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            border-radius: 0 0 5px 5px;
+        }
+        .session-list li {
+            position: relative;
+            border-top: 1px solid #e3e3e3;
+            padding: .3em 12px;
+        }
+        .btn {
+/*             display: block !important; */
+            text-shadow: 0 1px 1px #194b7e;
+            border: 1px solid;
+            border-radius: 5px;
+            
+        }
+        .button-left {
+/*
+            width: 100%;
+            height: 100%;
+*/
+            margin-left: 10px;
+            margin-bottom: 10px;
+            margin-top: 10px;
+        }
+        .button-right {
+            margin-right: 10px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+        .scrollarea {
+            overflow: auto;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: transparent;
+        }
+        .nav-tabs>li>a {
+            border-radius: 0px 0px 4px 4px;
+        }
+        
+        .nav-tabs {
+            border-top: 1px solid #ddd;
+/*             border-bottom: 0px; */
+        }
+        .chat-toolbar-footer {
+            z-index: auto;
+            background: 0;
+        }
+        .chat-toolbar {
+            padding: 3px 10px 5px 6px;
+            box-sizing: border-box;
+            display: -webkit-box;
+            width: 100%;
+            -webkit-box-orient: horizontal;
+        }
+        .chat-textarea {
+            display: block;
+            height: 32px;
+            -webkit-box-flex: 1;
+            max-height: 80px;
+            margin: 5px 10px 5px 6px;
+            border-radius: 5px;
+            padding: 5px 10px;
+            width: 100%;
+            overflow: hidden;
+            box-sizing: border-box;
+            resize: none;
+            box-sizing: border-box;
+        }
+        @media (min-width: 1000px){
+            #main-container {
+                float: left;
+                height: 100%;
+                width: 280px;
+            }
+            #container {
+                position: relative;
+                width: 700px;
+                height: 100%;
+                float: left;
+                margin-left: 20px;
+            }
+            .chat-panel {
+                width: 100%;
+                height: 80%;
+/*                 top: 12%; */
+            }
+            .my-panel {
+                background: 0;
+                transition:none!important;
+                /* -webkit-transition:none!important; */
+                transform:none!important;
+                /* -webkit-transform:none!important; */
+/*
+                transition-property: none;
+                transition-duration: initial;
+                transition-timing-function: initial;
+                transition-delay: initial;
+                transform: none !important;
+*/
+            }
+            .main-panel {
+                position: relative;
+                display: block !important;
+                width: 280px;
+                background: #d7e8ff;
+                border-radius: 5px;
+                height: 80%;
+    /*             top: 12%; */
+                transform: none!important;
+            }
+            .session-list li {
+                padding: .15em 1px;
+            }
+        }
+        
+        
+    </style>
+    <script src="/static/js/socket.io-1.4.5.js"></script>
+    <script src="/static/js/jquery.min.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
+    <script src="/static/js/jquery.form.js"></script> 
+    <script type="text/javascript" charset="utf-8">
+        var namespace = '/message';
+        var socket = io.connect('http://' + document.domain + ':' + location.port + namespace);
+        socket.on('connect', function() {
+            socket.emit('ready for data', {data: 'I\'m connected!'});
+        });
+        socket.on('first response', function() {
+            socket.emit('receive wating message')
+        });
+        socket.on('receive message'), function(msg) {
+            console(msg)
+        });
+        $(document).ready(function() {
+            $('#nav-session a').click(function (e) {
+                e.preventDefault()
+                $(this).tab('show')
+            });
+            $('#nav-contact a').click(function (e) {
+                e.preventDefault()
+                $(this).tab('show')
+            });
+        });
+
+    </script>
+    <title>Title</title>
+</head>
+
+<body>
+    <div class="main-header">
+        <div class="container">
+        <h1 class="lead text-center">
+            Welcome, {{ db.user_nickname(id) }}
+        </h1>
+        </div>
+    </div>
+	<div id="wrap">
+	    <div id="main-container">
+    		<div id="main-panel" class="my-panel main-panel">
+    		    <div id="main-panelbody-container" class="panel-body-container" style="bottom: 50px">
+    		        <div id="main-panelbody" class="tab-content panel-body">
+        		        <div role="tabpanel" class="tab-pane my-panel" id="session-panel">
+        		            <header id="session-panelheader">
+        		                <h1>
+        		                    Chats
+        		                </h1>
+        		            </header>
+        		            <div id="session-panelbody-container" class="panel-body-container" style="top: 45px">
+        		            <div id="session-panelbody" class="panel-body">
+        		                <div id="session-scrollarea" class="scrollarea">
+        		                    <ul id="session-list" class="session-list" style="padding-left: 1em">
+        		                    </ul>
+        		                </div>
+        		            </div>
+        		            </div>
+                        </div>
+        		        <div role="tabpanel" class="tab-pane my-panel" id="contact-panel">
+        		            <header id="contact-panelheader">
+            		            <button id="nullbutton" class="button-left" style="opacity:0 !important">
+            		                <span>
+            		                    NULL
+            		                </span>
+            		            </button>
+            		            <h1>
+            		                Contact
+            		            </h1>
+            		            <button id="addcontact" class="button-right btn btn-info">
+            		                <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+            		            </button>
+        		            </header>
+        		            <div id="contact-panelbody-container" class="panel-body-container" style="top: 45px">
+        		            <div id="contact-panelbody" class="panel-body">
+        		                <div id="contact-scrollarea" class="scrollarea">
+                                    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                                      <div class="panel panel-default">
+                                        <div class="panel-heading" role="tab" id="headingOne">
+                                          <h4 class="panel-title">
+                                            <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                                              Collapsible Group Item #1
+                                            </a>
+                                          </h4>
+                                        </div>
+                                        <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+                                          <div class="panel-body">
+                                          hello1
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <div class="panel panel-default">
+                                        <div class="panel-heading" role="tab" id="headingTwo">
+                                          <h4 class="panel-title">
+                                            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                              Collapsible Group Item #2
+                                            </a>
+                                          </h4>
+                                        </div>
+                                        <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                                          <div class="panel-body">
+                                          hello2
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <div class="panel panel-default">
+                                        <div class="panel-heading" role="tab" id="headingThree">
+                                          <h4 class="panel-title">
+                                            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                              Collapsible Group Item #3
+                                            </a>
+                                          </h4>
+                                        </div>
+                                        <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+                                          <div class="panel-body">
+                                              hello3
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+        		                </div>
+        		            </div>
+        		            </div>
+                        </div>
+    		        </div>
+    		    </div>
+    		    <footer id="main-panelfooter">
+    		        <nav id="main-nav">
+    		            <ul id="nav-tab" class="nav nav-tabs nav-justified">
+    		                <li id="nav-session">
+    		                    <a data-toggle="tab" role="tab" aria-controls="session-panel" href="#session-panel">
+        		                    <span>Chats</span>
+    		                    </a>
+    		                </li>
+    		                <li id="nav-contact">
+    		                    <a data-toggle="tab" role="tab" aria-controls="contact-panel" href="#contact-panel">
+        		                    <span>Contacts</span>
+    		                    </a>
+    		                </li>
+    		            </ul>
+    		        </nav>
+    		    </footer>
+    		</div>
+	    </div>
+		<div id="container" style="display: block">
+		    <div id="chat-panel" class="my-panel chat-panel" style="background: aliceblue;">
+    			<header id="chat-panelheader">
+    			    <button id="close-panel" class="button-left">
+    			        <span class="glyphicon glyphicon-chevron-left"> </span>
+    			    </button>
+    				<h1 id="contact-name">
+        				NULL
+                    </h1> 
+    				<button id="delete-contact" class="button-right">
+    				    <span class="glyphicon glyphicon-remove"> </span>
+    				</button>
+    			</header>
+    			<div id="chat-panelbody-container" class="panel-body-container" style="top: 45px; bottom: 50px; overflow: hidden;">
+    			    <div id="chat-panelbody">
+        		        <div id="contact-scrollarea" class="scrollarea">
+        			        <ul id="chat-list" class="chat-list" style="padding-left: 2em">
+        			        </ul>
+        		        </div>
+    			    </div>
+    			</div>
+    			<footer id="chat-panelfooter" class="chat-toolbar-footer">
+    			    <div id="chat-toolbar" class="chat-toolbar">
+        				<textarea id="chat-textarea" class="chat-textarea"></textarea>
+                        <button id="send-button" class="btn btn-primary" style="width=56px; display: block !important;">Send</button>
+    			    </div>
+    				</button>
+    			</footer>
+            </div>
+		</div>
+	</div>
+	<div id="searchContact">
+	    <div id="searchResult">
+	    </div>
+	</div>
+	<div id="addGroupBox">
+	</div>
+</body>
+
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script src="static/js/jquery.form.js"></script> 
+    <script type="text/javascript">
+      $$(document).ready( function() {
+/*
+        if (window.location.hash) {
+          if (window.location.hash.substring(1) === "login") {
+            $$("#logininfo").fadeIn("slow", function() {
+              $$(this).delay(2000).fadeOut("slow");
+            });
+          } else if (window.location.hash.substring(1) === "logout") {
+            $$('#logoutinfo').fadeIn("slow", function() {
+              $$(this).delay(2000).fadeOut("slow");
+            });
+          }
+        }
+*/
+        $$('#registerForm').ajaxForm({
+          success: function() {
+          window.location.href = "/account/login"
+/*
+            $$('#registersucceed').fadeIn("slow", function() {
+              $$('#registersucceed').delay(1000).fadeOut("slow", function() {
+                window.location.href = "/admin";
+              });
+            });
+*/
+          },
+/*
+          error: function() {
+            $$('#loginfailed').fadeIn("slow", function() {
+              $$('#loginfailed').delay(2000).fadeOut("slow");
+            });
+          }
+*/
+        });
+      });
+    </script>    
+    <title>Register</title>
+</head>
+<body>
+	<form method="POST" action="/account/register">
+	    {{ form.csrf_token }}
+	    {{ form.email.label }} {{ form.email(size=20) }} <br/>
+	    {{ form.password.label }} {{ form.password(size=20) }}
+	    <input type="submit" value="Register">
+	</form>
+</body>
+</html>

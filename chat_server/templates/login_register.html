@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width-device-width, inital-scale=1">
+    <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/bootstrap-theme.min.css">
+    <style type="text/css">
+        .hover-mask {
+            z-index: 1;
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            background: gray;
+            opacity: 0.5;
+            filter: alpha(opacity=50);
+            display: none;
+        }
+        .hover-panel {
+            z-index: 9;
+            position: absolute;
+            top: 20%;
+            left: 25%;
+            border-radius: 5px;
+            border: solid 2px;
+            display: none;
+            background: white;
+            width: 50%;
+        }
+        .form-div {
+            padding: 80px 60px 40px;
+            text-align: center;
+        }
+        .form {
+            text-align: left;
+        }
+        .form ul {
+            position: relative;
+            margin-left: 10%;
+        }
+        .form li {
+            margin-bottom: 15px;
+            list-style-type: none;
+/*             padding-left: 80px; */
+        }
+        .form li strong {
+            float:left;
+            text-align: right;
+            width: 30%;
+            margin-right: 3%;
+        }
+    </style>
+    <script src="/static/js/jquery.min.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
+    <script src="/static/js/jquery.form.js"></script> 
+    <script type="text/javascript">
+        $(document).ready( function() {
+            $('#login-button').click(function() {
+                $('#popover-mask').show()
+                $('#popover-mask').height($(document).height())
+                $('#login-panel').slideDown(200)
+            })
+            $('#register-button').click(function() {
+                $('#popover-mask').show()
+                $('#popover-mask').height($(document).height())
+                $('#register-panel').slideDown(200)
+            })
+            $('#login-form').ajaxForm({
+                success: function(res) {
+                    if (res.status == 1) {
+                        $('#loginsucceed').fadeIn("slow", function() {
+                            $('#loginsucceed').delay(1000).fadeOut("slow", function() {
+                            window.location.href = "/";
+                            });
+                        });
+                        
+                    } else {
+                        $('#loginfailed').fadeIn("slow", function() {
+                            $('#loginfailed').delay(2000).fadeOut("slow");
+                        });                    
+                    }
+                }
+            });
+            $('#register-form').ajaxForm({
+                success: function(res) {
+                    if (res.status == 1) {
+                        $('#registersucceed').fadeIn("slow", function() {
+                            $('#registersucceed').delay(1000).fadeOut("slow", function() {
+                            window.location.href = "/";
+                            });
+                        });
+                        
+                    } else {
+                        $('#registerfailed').fadeIn("slow", function() {
+                            $('#registerfailed').delay(2000).fadeOut("slow");
+                        });                    
+                    }
+                }
+            });
+            $('#popover-mask').click(function() {
+                $('#popover-mask').hide()
+                $('#login-panel').slideUp(200)
+                $('#register-panel').slideUp(200)
+            })
+        });
+    </script>    
+    <title>Login</title>
+</head>
+<body>
+    <div class="main-header">
+        <div class="container">
+        <h1 class="lead text-center">
+            Welcome to Just Chat!
+        </h1>
+        <p class="lead text-center">
+            To continue, please login/register
+        </p>
+        </div>
+    </div>
+    <div id="wrap">
+        <center> 
+            <button id="login-button" class="btn btn-primary"> Login </button>
+            <button id="register-button" class="btn btn-primary"> Register </button>
+        </center>
+    </div>
+    <div id="popover-mask" class="hover-mask">
+    </div>
+    <div id="login-panel" class="hover-panel">
+        <div id = "loginsucceed" style="display:none" class="text-center alert alert-success" role="alert">
+            Login succeed!
+        </div>
+        <div id = "loginfailed" style="display:none" class="text-center alert alert-danger" role="alert">
+            Sorry, Username or Password wrong!
+        </div>
+        <div class="form-div">
+            <form id="login-form" class="form" method="POST" action="/account/login">
+            {{ form_login.csrf_token }}
+            <ul>
+                <li>
+                    <strong> {{ form_login.email.label }} </strong>
+                    {{ form_login.email(size=20) }}
+                </li>
+                <li>
+                    <strong> {{ form_login.password.label }} </strong>
+                    {{ form_login.password(size=20) }}
+                </li>
+                <li>
+                    <strong> {{ form_login.remember.label}} </strong>
+                    {{ form_login.remember(size=20) }}
+                </li>
+            </ul>    
+            <center>             
+            <input type="submit" class="btn btn-primary" value="Login">
+            </center>
+            </form>
+        </div>
+    </div>
+    <div id="register-panel" class="hover-panel">
+        <div class="form-div">
+            <div id = "registersucceed" style="display:none" class="text-center alert alert-success" role="alert">
+                Register succeed!
+            </div>
+            <div id = "registerfailed" style="display:none" class="text-center alert alert-danger" role="alert">
+                Invalid input!
+            </div>
+            <form id="register-form" class="form" method="POST" action="/account/register">
+            {{ form_register.csrf_token }}
+            <ul>
+                <li>
+                    <strong> {{ form_register.email.label }} </strong>
+                    {{ form_register.email(size=20) }}
+                </li>
+                <li>
+                    <strong> {{ form_register.password.label }} </strong>
+                    {{ form_register.password(size=20) }}
+                </li>
+                <li>
+                    <strong> {{ form_register.nickname.label}} </strong>
+                    {{ form_register.nickname(size=20) }}
+                </li>
+            </ul>    
+            <center>             
+            <input type="submit" class="btn btn-primary" value="Register">
+            </center>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
