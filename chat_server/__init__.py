@@ -11,7 +11,8 @@ def create_app(debug=False):
     app.config['SECRET_KEY'] = 'burstlink!'
     app.config['FLASK_LOG_LEVEL'] = 'DEBUG'
     flask_log = Logging(app)
-
+    app.jinja_env.variable_start_string = '[['
+    app.jinja_env.variable_end_string = ']]'
     from main import main
     from account import account
     from message import message

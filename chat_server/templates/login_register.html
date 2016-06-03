@@ -6,49 +6,131 @@
     <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="/static/css/bootstrap-theme.min.css">
     <style type="text/css">
-        .hover-mask {
-            z-index: 1;
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 100%;
-            background: gray;
-            opacity: 0.5;
-            filter: alpha(opacity=50);
-            display: none;
+        .btn {
+            background-image: none;
         }
-        .hover-panel {
-            z-index: 9;
-            position: absolute;
-            top: 20%;
-            left: 25%;
-            border-radius: 5px;
-            border: solid 2px;
-            display: none;
-            background: white;
-            width: 50%;
-        }
+        .lead {
+            font-size: 3em;
+        }    
         .form-div {
-            padding: 80px 60px 40px;
+            padding: 2em 0em 3em;
             text-align: center;
         }
         .form {
             text-align: left;
         }
         .form ul {
-            position: relative;
-            margin-left: 10%;
+            padding-left: 15%;
+            height: 100%;
         }
         .form li {
             margin-bottom: 15px;
             list-style-type: none;
-/*             padding-left: 80px; */
         }
         .form li strong {
             float:left;
             text-align: right;
             width: 30%;
             margin-right: 3%;
+        }
+        @media (min-width: 1000px){
+            .hover-mask {
+                z-index: 1;
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                background: gray;
+                opacity: 0.5;
+                filter: alpha(opacity=50);
+                display: none;
+            }
+            .hover-panel {
+                z-index: 9;
+                position: absolute;
+                top: 20%;
+                left: 25%;
+                border-radius: 5px;
+                border: solid 2px;
+                display: none;
+                background: white;
+                width: 50%;
+            }
+            .form-div {
+                padding: 2em 0em 3em;
+                text-align: center;
+            }
+            .form {
+                text-align: left;
+            }
+            .form ul {
+                padding-left: 15%;
+                height: 100%;
+            }
+            .form li {
+                margin-bottom: 15px;
+                list-style-type: none;
+            }
+            .form li strong {
+                float:left;
+                text-align: right;
+                width: 30%;
+                margin-right: 3%;
+            }
+            .btn {
+                width: 6em;
+            }
+        }
+        @media (max-width: 999px) {
+            .hover-mask {
+                z-index: 1;
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                background: gray;
+                opacity: 0.5;
+                filter: alpha(opacity=50);
+                display: none;
+            }
+            .hover-panel {
+                z-index: 9;
+                position: absolute;
+                top: 20%;
+                left: 5%;
+                border-radius: 5px;
+                border: solid 2px;
+                display: none;
+                background: white;
+                width: 90%;
+                font-size: 2.2em;
+            }
+            .main-header {
+                font-size: 1.4em;
+            }
+            .main-btn {
+                width: 5em;
+                font-size: 6em;
+                margin: 1em;
+            }
+            .panel-btn {
+                
+            }
+            .gap {
+                display: none;
+            }
+            .panel-btn {
+                font-size: 1.2em;
+                width: 5em;
+            }
+            #remember {
+                height: 1em;
+                width: 1em;
+                margin-top: .3em;
+            }
+            .form ul {
+                padding-left: 10%;
+            }
         }
     </style>
     <script src="/static/js/jquery.min.js"></script>
@@ -109,7 +191,7 @@
 </head>
 <body>
     <div class="main-header">
-        <div class="container">
+        <div class="">
         <h1 class="lead text-center">
             Welcome to Just Chat!
         </h1>
@@ -120,8 +202,9 @@
     </div>
     <div id="wrap">
         <center> 
-            <button id="login-button" class="btn btn-primary"> Login </button>
-            <button id="register-button" class="btn btn-primary"> Register </button>
+            <button id="login-button" class="main-btn btn btn-primary btn-lg"> Login </button>
+            <span class="gap">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>
+            <button id="register-button" class="main-btn btn btn-primary btn-lg"> Register </button>
         </center>
     </div>
     <div id="popover-mask" class="hover-mask">
@@ -135,23 +218,23 @@
         </div>
         <div class="form-div">
             <form id="login-form" class="form" method="POST" action="/account/login">
-            {{ form_login.csrf_token }}
+            [[ form_login.csrf_token ]]
             <ul>
                 <li>
-                    <strong> {{ form_login.email.label }} </strong>
-                    {{ form_login.email(size=20) }}
+                    <strong> [[ form_login.email.label ]] </strong>
+                    [[ form_login.email(size=20) ]]
                 </li>
                 <li>
-                    <strong> {{ form_login.password.label }} </strong>
-                    {{ form_login.password(size=20) }}
+                    <strong> [[ form_login.password.label ]] </strong>
+                    [[ form_login.password(size=20) ]]
                 </li>
                 <li>
-                    <strong> {{ form_login.remember.label}} </strong>
-                    {{ form_login.remember(size=20) }}
+                    <strong> [[ form_login.remember.label]] </strong>
+                    [[ form_login.remember(size=20) ]]
                 </li>
             </ul>    
             <center>             
-            <input type="submit" class="btn btn-primary" value="Login">
+            <input type="submit" class="panel-btn btn btn-primary" value="Login">
             </center>
             </form>
         </div>
@@ -165,23 +248,23 @@
                 Invalid input!
             </div>
             <form id="register-form" class="form" method="POST" action="/account/register">
-            {{ form_register.csrf_token }}
+            [[ form_register.csrf_token ]]
             <ul>
                 <li>
-                    <strong> {{ form_register.email.label }} </strong>
-                    {{ form_register.email(size=20) }}
+                    <strong> [[ form_register.email.label ]] </strong>
+                    [[ form_register.email(size=20) ]]
                 </li>
                 <li>
-                    <strong> {{ form_register.password.label }} </strong>
-                    {{ form_register.password(size=20) }}
+                    <strong> [[ form_register.password.label ]] </strong>
+                    [[ form_register.password(size=20) ]]
                 </li>
                 <li>
-                    <strong> {{ form_register.nickname.label}} </strong>
-                    {{ form_register.nickname(size=20) }}
+                    <strong> [[ form_register.nickname.label]] </strong>
+                    [[ form_register.nickname(size=20) ]]
                 </li>
             </ul>    
             <center>             
-            <input type="submit" class="btn btn-primary" value="Register">
+            <input type="submit" class="panel-btn btn btn-primary" value="Register">
             </center>
             </form>
         </div>

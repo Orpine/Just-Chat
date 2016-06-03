@@ -35,7 +35,14 @@ def user_nickname():
             return jsonify({'status': 1})
 
 
-@user.route('/api/addfriend')
+@user.route('/api/friendlist', methods=['GET'])
+@login_required
+def user_friendlist():
+    id = request.args.get('user_id')
+    return json.loads(db.user_friendlist(id))
+
+
+@user.route('/api/addfriend', methods=['GET', 'POST'])
 @login_required
 def user_addfriend():
     if request.method == 'GET':
@@ -44,36 +51,72 @@ def user_addfriend():
             id = db.account_id(email)
             if id is not None:
                 user_nickname = db.user_nickname(id)
-                return jsonify({'status': 1, 'message': 'success', 'uesr_id': id, 'user_nickname': user_nickname})
+                return jsonify({'status': 1, 'message': 'success', 'user_id': id, 'user_nickname': user_nickname})
             else:
                 return jsonify({'status': -2, 'message': 'email address does not exist'})
         else:
             return jsonify({'status': -1, 'message': 'email address error'})
     elif request.method == 'POST':
-        requester_id = current_user.id
+        requester_id = current_user.get_id()
         responser_id = request.form.get('responser_id')
-        if responser_id in db.user_friendlist(requester_id):
+        group_id = request.form.get('group_id')
+        if responser_id == requester_id:
+            return jsonify({'status': -2, 'message': 'cannot add self'})
+        if db.user_check_in_friendlist(requester_id, responser_id):
             return jsonify({'status': -1, 'message': 'user already in requester\'s friendlist'})
         else:
-            db.user_friendlist(requester_id, responser_id)
+            db.user_add_friend(requester_id, responser_id, group_id, True)
             return jsonify({'status': 1, 'message': 'success'})
     else:
         raise Exception('bad request method')
+
+@user.route('/api/delfriend', methods=['POST'])
+@login_required
+def user_delfriend():
+    requester_id = current_user.get_id()
+    responser_id = request.form.get('friend_id')
+    db.user_del_friend(requester_id, responser_id, real_del = True)
+    return jsonify({'status': 1, 'message': 'success'})
 
 
 @user.route('/api/addgroup', methods=['POST'])
 @login_required
 def user_addgroup():
-    if request == 'POST':
-        group_name = request.form.get('group_name')
-        if group_name == '':
-            return jsonify({'status': -1, 'message': 'empty group name'})
-        db.user_friendgroup(current_user.id, group_name)
+    group_name = request.form.get('group_name')
+    if group_name == '':
+        return jsonify({'status': -1, 'message': 'empty group name'})
+    db.user_friendgroup(current_user.get_id(), group_name)
+    return jsonify({'status': 1, 'message': 'success'})
 
 
-# @login_manager.user_loader
-# def load_user(user_id):
-#     return User.get(user_id)
+@user.route('/api/delgroup', methods=['POST'])
+@login_required
+def user_delgroup():
+    id = current_user.get_id()
+    del_group_id = request.form.get('del_group_id')
+    merge_group_id = request.form.get('merge_group_id')
+    if del_group_id == merge_group_id:
+        return jsonify({'status': -1, 'message': 'del group and merge group are same'})
+    # if group_name == '':
+    #     return jsonify({'status': -1, 'message': 'empty group name'})
+    db.user_del_friend_group(id, del_group_id, merge_group_id)
+    # db.user_friendgroup(current_user.id, gr)
+    return jsonify({'status': 1, 'message': 'success'})
+
+@user.route('/api/changegroup', methods=['POST'])
+@login_required
+def user_changegroup():
+    id = current_user.get_id()
+    friend_id = request.form.get('friend_id')
+    pre_group_id = request.form.get('pre_group_id')
+    new_group_id = request.form.get('new_group_id')
+    if new_group_id == pre_group_id:
+        return jsonify({'status': -1, 'message': "won't change"})
+    # if group_name == '':
+    #     return jsonify({'status': -1, 'message': 'empty group name'})
+    db.user_add_to_friendgroup(id, new_group_id, pre_group_id, friend_id)
+    # db.user_friendgroup(current_user.id, gr)
+    return jsonify({'status': 1, 'message': 'success'})
 
 
 

@@ -42,7 +42,7 @@ def register_process():
         if email_exist(email):
             return flask.jsonify({'status': -2, 'message': 'account already exist'})
         add_new_account(email, password, nickname)
-
+        
         return flask.jsonify({'status': 1, 'message': 'register success'})
     else:
         return flask.jsonify({'status': -1, 'message': 'invalid input'})
@@ -57,6 +57,7 @@ def login():
         password = form.password.data
         id = db.account_id(email)
         if id is not None and db.account_password(id) == password:
+            # print form.remember.data, type(form.remember.data)
             login_user(User(id = id), remember = form.remember.data)
             return jsonify({'status': 1, 'message': 'success'})
         else:

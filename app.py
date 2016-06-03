@@ -9,6 +9,7 @@ app = create_app(debug=True)
 
 login_manager = LoginManager()
 login_manager.init_app(app)
+login_manager.login_view = '/'
 
 
 @login_manager.user_loader
@@ -29,4 +30,4 @@ def hello_world():
 
 
 if __name__ == "__main__":
-    socketio.run(app, port=5000)
+    socketio.run(app, host='0.0.0.0', port=5000)

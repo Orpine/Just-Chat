@@ -1,11 +1,16 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="app">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width-device-width, inital-scale=1">
+    <meta name="viewport" content="width-device-width, inital-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes" />
     <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="/static/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/style.css">
     <style>
+        .btn {
+            background-image: none;
+        }
         body {
             position: absolute;
             height: 100%;
@@ -16,9 +21,10 @@
         }        
         header>h1, footer>h1 {
             text-align: center;
-            font-size: 18px;
             font-weight: 400;
             -webkit-box-flex: 10;
+            font-size: 2em;
+            margin-top: 10px;
         }
         textarea {
             border: 0;
@@ -26,14 +32,48 @@
         header {
             -webkit-user-select: none;
         }
-        
-        nav ul {
-            height: 50px;
+        p {
+            margin: 0;
         }
-        
-        
+        nav ul {
+            height: 100px;
+        }
+        .form-control {
+            height: auto;
+            width: auto;
+        }
+        .panel {
+            margin-bottom: 5px;
+        }
+        .list-group {
+            margin-bottom: 0;
+        }
+        .main-header {
+            display: none;
+        }
+        .hover-mask {
+            z-index: 1;
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            background: gray;
+            opacity: 0.5;
+            filter: alpha(opacity=50);
+            display: none;
+        }
+        .hover-panel {
+            z-index: 100;
+            position: absolute;
+            top: 20%;
+            left: 5%;
+            border-radius: 5px;
+            border: solid 2px;
+            display: none;
+            background: white;
+            width: 90%;
+        }
         #wrap {
-            width: 1000px;
             height: 100%;
             margin: 0 auto;
         }
@@ -79,7 +119,7 @@
             border-top: 1px solid #e3e3e3;
             padding: .3em 12px;
         }
-        .btn {
+        .mybtn {
 /*             display: block !important; */
             text-shadow: 0 1px 1px #194b7e;
             border: 1px solid;
@@ -109,6 +149,10 @@
             width: 100%;
             height: 100%;
             background: transparent;
+            word-wrap: break-word; 
+            word-break: normal; 
+
+
         }
         .nav-tabs>li>a {
             border-radius: 0px 0px 4px 4px;
@@ -138,12 +182,134 @@
             border-radius: 5px;
             padding: 5px 10px;
             width: 100%;
-            overflow: hidden;
+            overflow: auto;
             box-sizing: border-box;
             resize: none;
-            box-sizing: border-box;
+        }
+        .group-list {
+            position: relative;
+            margin-top: 0;
+            padding: 0;
+        }
+        .group-list li {
+            border-top-width: 3px;
+            padding: .3em 12px;
+        }
+        
+        #search-friend-input, #search-friend-result, .add-to-label, #add-group-input {
+            display: block;
+/*             height: 32px; */
+            -webkit-box-flex: 1;
+/*             height: 100%; */
+/*             max-height: 80px; */
+            margin: 5px 10px 5px 6px;
+            border-radius: 5px;
+            padding: 5px 10px;
+/*             width: 100%; */
+        }
+        
+        .search-friend-result-wrapper {
+            padding: 1em 0; 
+            -webkit-box-flex: 1; 
+            border-top: 2px solid gray; 
+            background: #ABC;
+            font-size: 16px;
+            display: none            
+        }
+        .panel-wrapper {
+            padding: .2em;
+            display: -webkit-box;
+            -webkit-box-flex: 1;                
+        }
+        .list-group-item {
+            cursor: pointer;
+        }
+        
+/*
+        .chat-time {
+            color: #00764a;
+        }
+*/
+        .chat-content {
+            font-size: 1.5em;
+        }
+        
+        #friend-panel, #session-panel {
+            z-index: 0;
+        }
+        
+        .chat-panel {
+            width: 100%;
+            display: none;
+/*                 top: 12%; */
+        }
+        
+        #send-message-button {
+            width: 56px; 
+            display: block;
+        }
+        #chat-panelbody-container, #friend-panelbody-container {
+            top: 150px;
+        }
+        
+        #delgroup-confirm {
+            margin-top: 5%;
+        }
+        .dropdown-menu {
+            font-size: 1em;
+            margin-right: 10px;
+        }
+        .dropdown-item {
+            padding: 0.1em 0.2em;
+            cursor: pointer;
+        }
+        .del-btn {
+            background: transparent;
+            padding: 0;
+            border: 0;
+            float: right;
+        }
+        .unread-icon {
+            height: 100%; 
+            transform: translateY(35%); 
+            padding-right: 0.5em;            
         }
         @media (min-width: 1000px){
+            nav ul {
+                height: 50px;
+            }
+            #wrap {
+                width: 1000px;
+            }
+            .main-header {
+                display: block;
+            }
+            .hover-mask {
+                z-index: 1;
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                background: gray;
+                opacity: 0.5;
+                filter: alpha(opacity=50);
+                display: none;
+            }
+            .hover-panel {
+                z-index: 100;
+                position: absolute;
+                top: 20%;
+                left: 30%;
+                width: 40%;
+                border-radius: 5px;
+                border: solid 2px;
+                display: none;
+                background: white;
+            }        
+            .delete-panel {
+                left: 30%;
+                width: 40%;            
+            }
             #main-container {
                 float: left;
                 height: 100%;
@@ -156,9 +322,13 @@
                 float: left;
                 margin-left: 20px;
             }
+            #session-panelbody {
+                top: 60px;
+            }
             .chat-panel {
                 width: 100%;
                 height: 80%;
+                display: none;
 /*                 top: 12%; */
             }
             .my-panel {
@@ -175,6 +345,9 @@
                 transform: none !important;
 */
             }
+            .list-group-item {
+                font-size: 1.2em;
+            }
             .main-panel {
                 position: relative;
                 display: block !important;
@@ -188,7 +361,146 @@
             .session-list li {
                 padding: .15em 1px;
             }
+            .group-list li {
+                padding: .7em 14px;
+            }
+            #search-friend-input, #search-friend-result, .add-to-label, #add-group-input {
+                display: block;
+                height: 32px;
+                -webkit-box-flex: 1;
+                max-height: 80px;
+                margin: 5px 10px 5px 6px;
+                border-radius: 5px;
+                padding: 5px 10px;
+/*                 width: 100%; */
+            }
+            
+            .search-friend-result-wrapper {
+                padding: .5em 1em; 
+                -webkit-box-flex: 1; 
+                border-top: 2px solid gray; 
+                background: #ABC;
+                font-size: 16px;
+                display: none            
+            }
+            .panel-wrapper {
+                padding: 1em;
+                display: -webkit-box;
+                -webkit-box-flex: 1;                
+            }
+            #main-panelbody-container, #chat-panelbody-container {
+                bottom: 50px;
+            }
+            #chat-panelbody-container {
+                top: 45px;
+            }
+            #friend-panelbody-container {
+                top: 60px;
+            }
+            #add-to-friendgroup {
+/*
+                font-size: 1em;
+                height: 4em;
+                margin-top: 10%;
+*/
+            }
+            .hover-panel .panel .panel-body h2 {
+                font-size: 1.5em;
+            }
+            .dropdown-item {
+                padding-left: 23%;
+            }
+            .session-item {
+                height: 70px;
+            }
+            
         }
+        @media (max-width: 999px) {
+            header>h1 {
+                margin-top: 0;
+            }
+            .my-panel header {
+                font-size: 4em;
+                height: 150px;
+                margin-top: 0;
+                border-bottom: 2px solid;
+            }
+            #main-panelfooter {
+                font-size: 3em;
+            }
+            #main-panelbody-container {
+                bottom: 100px;
+            }
+            #chat-panelbody-container {
+                bottom: 10em;    
+            }
+            #session-panelheader {
+                display: none;
+            }
+            .scrollarea {
+                font-size: 2.2em;
+            }
+            .panel-title {
+                font-size: 1.5em;
+            }
+            .chat-textarea {
+                font-size: 3em;
+                max-height: 5em;
+                border-radius: 30px;
+                height: 2em;
+                -webkit-overflow-scrolling: touch;
+                
+            }
+            #send-message-button {
+                display: none;
+            }
+            .glyphicon {
+                font-size: 3em;
+            }
+            .mybtn{
+                width: 8em;
+                height: 6em;
+                margin-top: 25%;
+                top: 50%;
+            }
+            #search-friend-input, #search-friend-result, .add-to-label, #add-group-input {
+                font-size: 3.5em;
+            }
+            #add-to-friendgroup {
+                top: 50%;
+                transform: translate(-100%, -50%);
+                position: absolute;            
+            }
+            #delfriend-confirm, #changegroup-confirm {
+                margin-top: 3%;
+            }
+            .group-list {
+                font-size: 1.5em;
+            }
+            
+            .hover-panel .panel .panel-heading {
+                font-size: 4em;
+            }
+            .hover-panel .panel .panel-body .btn {
+                font-size: 1em;
+                width: 4em;
+                height: auto;
+            }
+            .hover-panel .panel .panel-body h2 {
+                font-size: 3em;
+            }
+            #friend-panelheader h1 {
+                font-size: 1.5em;
+                transform: translateY(15%);
+            }
+            #del-friendgroup, #change-friendgroup {
+                font-size: 1em;
+            }
+            .session-item div span {
+                font-size: 1.5em;
+            }
+        }
+        
         
         
     </style>
@@ -196,27 +508,265 @@
     <script src="/static/js/jquery.min.js"></script>
     <script src="/static/js/bootstrap.min.js"></script>
     <script src="/static/js/jquery.form.js"></script> 
+    <script src="/static/js/angular.min.js"></script>
+    <script src="/static/js/moment.min.js"></script> 
+    <script src="/static/js/inobounce.min.js"></script> 
     <script type="text/javascript" charset="utf-8">
-        var namespace = '/message';
-        var socket = io.connect('http://' + document.domain + ':' + location.port + namespace);
-        socket.on('connect', function() {
-            socket.emit('ready for data', {data: 'I\'m connected!'});
+        var app = angular.module("app", [])
+        session_content = {}
+        session_list = []
+        current_messenger = ""
+        current_group = ""
+        friend_list = {}
+        friend_group_list = []
+        app.controller("friendGroupListController", function($scope) {
+            $scope.friendGroupList = friend_group_list // [{group_id: 1, group_name: "hello"}, {group_id: 2, group_name: "world"}]
+            $scope.friendList = friend_list
+            $scope.refreshFriendGroupList = function() {
+                $scope.friendGroupList = friend_group_list
+                $scope.friendList = friend_list
+            }
         });
-        socket.on('first response', function() {
-            socket.emit('receive wating message')
+        app.controller("chatPanelController", function($scope) {
+            $scope.chatContents = []
+            $scope.refreshChatPanel = function(chatContents) {
+                $scope.chatContents = chatContents
+            }
         });
-        socket.on('receive message'), function(msg) {
-            console(msg)
-        });
+        app.controller("sessionPanelController", function($scope) {
+            $scope.sessionList = []
+            $scope.sessioncontent= {}
+            $scope.refreshSessionPanel = function() {
+                $scope.sessionList = session_list
+                $scope.sessionContent = session_content
+                $scope.friendList = friend_list
+            }
+        })
         $(document).ready(function() {
+            var namespace = '/message';
+            socket = io.connect('http://' + document.domain + ':' + location.port + namespace);
+            function refreshChatPanel() {
+                var scope = angular.element("#chat-content-list").scope()
+                scope.$apply(function() {
+                    scope.refreshChatPanel(session_content[current_messenger] == undefined ? undefined : session_content[current_messenger].content)
+                })
+                $('#chat-panel').show()
+                var odiv = $('#chat-scrollarea')[0]
+                odiv.scrollTop = odiv.scrollHeight                
+            }
+            function refreshSessionPanel() {
+/*                 console.log('refresh') */
+                var scope = angular.element("#session-panelbody").scope()
+                scope.$apply(function() {
+                    scope.refreshSessionPanel()
+                })                
+            }
+            function update_session_content(sender, message) {
+/*                 console.log(session_content) */
+/*                 console.log(sender) */
+                if (session_content[sender] == undefined) {
+                    session_content[sender] = {}
+                    session_content[sender].content = []
+                    session_content[sender].unread = false
+                    session_list.push(sender)
+                }
+                session_content[sender].content.push(message)
+                session_list.unshift(session_list.splice(session_list.indexOf(sender), 1)[0])                
+                if (current_messenger == sender || message.self == true) {
+                    refreshChatPanel()
+                    refreshSessionPanel()
+                } else {
+                    session_content[sender].unread = true
+                    refreshSessionPanel()
+                }
+            }
+            function send_message(msg) {
+/*                 update_session_content(current_messenger, {message: msg, time: moment().format('MMM D YYYY HH:mm:ss'), self: true}) */
+                socket.emit('send message', {receiver: current_messenger, message: msg})
+            }
+            socket.on('connect', function() {
+                socket.emit('ready for data', {data: 'I\'m connected!'});
+            });
+            socket.on('first response', function() {
+                socket.emit('receive wating message')
+            });
+            socket.on('receive message', function(msg) {
+/*                 console.log(msg) */
+                update_session_content(msg.sender, msg.message)
+            });
+            socket.on('receive friendlist', function(msg) {
+                friend_list = msg
+            });
+            socket.on('receive friendgrouplist', function(msg) {
+                friend_group_list = msg
+                var scope = angular.element("#friend-panelbody").scope()
+                scope.$apply(function() {
+                    scope.refreshFriendGroupList(msg)
+                })
+                scope = angular.element("#add-to-friendgroup").scope()
+                scope.$apply(function() {
+                    scope.refreshFriendGroupList(msg)
+                })
+                scope = angular.element("#del-friendgroup").scope()
+                scope.$apply(function() {
+                    scope.refreshFriendGroupList(msg)
+                })
+                scope = angular.element("#change-friendgroup").scope()
+                scope.$apply(function() {
+                    scope.refreshFriendGroupList(msg)
+                })
+            });
             $('#nav-session a').click(function (e) {
                 e.preventDefault()
                 $(this).tab('show')
             });
-            $('#nav-contact a').click(function (e) {
+            $('#nav-friend a').click(function (e) {
                 e.preventDefault()
                 $(this).tab('show')
             });
+            $('#addfriend').click(function() {
+                $('#popover-mask').show()
+                $('#popover-mask').height($(document).height())
+                $('#search-friend-panel').slideDown(200)
+            })
+            $('#addgroup').click(function() {
+                $('#popover-mask').show()
+                $('#popover-mask').height($(document).height())
+                $('#add-group-panel').slideDown(200)
+            })
+            $(document).on('click', '#delgroup', function() {
+/*                 console.log($(this).attr('del-id')) */
+                var group_id = $(this).attr('del-id')
+                $('#popover-mask').show()
+                $('#popover-mask').height($(document).height())
+                $('#delete-group-name').text($(this).parent().children('a').text().trim())
+                $('#delete-group-name').attr('group-id', group_id)
+                $('#del-group-confirm-panel').slideDown(200)
+                
+            })
+            $('#delfriend').click(function() {
+                $('#popover-mask').show()
+                $('#popover-mask').height($(document).height())
+                $('#delete-friend-name').text($('#chat-panelheader>#friend-name').text())
+                $('#delete-friend-name').attr('friend-id', $('#chat-panelheader>#friend-name').attr('friend-id'))
+                $('#del-friend-confirm-panel').slideDown(200)
+            })
+            $('#changegroup').click(function() {
+                $('#popover-mask').show()
+                $('#popover-mask').height($(document).height())
+                $('#change-friend-name').text($('#chat-panelheader>#friend-name').text())
+                $('#change-friend-name').attr('friend-id', $('#chat-panelheader>#friend-name').attr('friend-id'))
+                $('#change-group-name').text($('#heading-' + current_group + '>h4>a').text().trim())
+                $('#change-group-confirm-panel').slideDown(200)
+            })
+            $('#addfriend-search').click(function() {
+                jQuery.get('/user/api/addfriend', {email: $('#search-friend-input').val()}, function(res) { 
+/*                     console.log(res) */
+                    if (res.status == 1) {
+                        $('#search-friend-result').text(res.user_nickname)
+                        $('#search-friend-result').attr('user-id', res.user_id) 
+                        $('#search-friend-result-wrapper').css('display', '-webkit-box')
+                    } else {
+                        $('#search-friend-result-wrapper').hide()
+                    }
+                })
+            })
+            $('#addfriend-confirm').click(function() {
+                jQuery.post('/user/api/addfriend', {responser_id: $('#search-friend-result').attr('user-id'), group_id: $('#add-to-friendgroup').val()}, function(res) {
+/*                     console.log(res) */
+                    socket.emit('refresh friendlist')
+                    socket.emit('refresh friendgrouplist')
+                    $('#popover-mask').click()
+                })
+            })
+            $('#addgroup-confirm').click(function() {
+                jQuery.post('/user/api/addgroup', {group_name: $('#add-group-input').val()}, function(res) {
+/*                     console.log(res) */
+                    socket.emit('refresh friendgrouplist')
+                    $('#popover-mask').click()
+                })
+            })
+            $('#delfriend-confirm').click(function() {
+                jQuery.post('/user/api/delfriend', {friend_id: $('#delete-friend-name').attr('friend-id')}, function(res) {
+/*                     console.log(res) */
+                    socket.emit('refresh friendlist')
+                    socket.emit('refresh friendgrouplist')
+                    if (current_messenger == $('#delete-friend-name').attr('friend-id')) {
+                        $('#chat-panel').hide()
+                    }
+                    $('#popover-mask').click()
+                })
+                
+            })
+            $('#delgroup-confirm').click(function() {
+                jQuery.post('/user/api/delgroup', {del_group_id: $('#delete-group-name').attr('group-id'), merge_group_id: $('#del-friendgroup').val()}, function(res) {
+                    if (res.status == 1) {
+/*                         console.log(res) */
+                        socket.emit('refresh friendgrouplist')
+                        $('#popover-mask').click()                        
+                    } else {
+                        $('#delgroupfailed').fadeIn("slow", function() {
+                            $('#delgroupfailed').delay(2000).fadeOut("slow");
+                        });                                            
+                    }
+                })
+                
+            })
+            $('#changegroup-confirm').click(function() {
+                jQuery.post('/user/api/changegroup', {friend_id: $('#change-friend-name').attr('friend-id'), pre_group_id: current_group, new_group_id: $('#change-friendgroup').val()}, function(res) {
+/*                     console.log(res) */
+                    socket.emit('refresh friendgrouplist')
+                    $('#popover-mask').click()                        
+                })
+                
+            })
+            $('#popover-mask').click(function() {
+                $('#popover-mask').hide()
+                $('#search-friend-panel').slideUp(200)
+                $('#add-group-panel').slideUp(200)
+                $('#del-friend-confirm-panel').slideUp(200)
+                $('#del-group-confirm-panel').slideUp(200)
+                $('#change-group-confirm-panel').slideUp(200)
+            })
+            $(document).on('click', '.list-group-item', function() {
+/*                 console.log($(this).attr('id')) */
+                var friend_id = $(this).attr('id').substr(10, 1000)
+                var friend_name = $(this).children()[0].textContent
+                var header = $('#chat-panelheader>#friend-name')
+                header.text(friend_name)
+                header.attr('friend-id', friend_id)
+                current_messenger = friend_id
+                current_group = $(this).parent().attr('id').substr(17, 1000)
+                if (session_content[friend_id] != undefined) {
+/*                     console.log('reach') */
+                    session_content[friend_id].unread = false
+                    refreshSessionPanel()
+                }
+                refreshChatPanel()
+            })
+            $('#send-message-button').click(function() {
+                var msg = $("#chat-textarea").val()
+                if (msg.trim() != "") {
+                    send_message(msg)
+                    $("#chat-textarea").val("")
+                    $("#chat-textarea").attr('style', '')
+                    $("#chat-panelfooter").attr('style', '')
+                }
+            }) 
+            $('#close-chat-panel').click(function() {
+                current_messenger = ""
+                $('#chat-panel').hide()
+            })
+            $( "#chat-textarea" ).keypress(function(e) {
+                if (e.keyCode == 13) {
+/*                     console.log($("#chat-textarea").val()) */
+                    $('#send-message-button').click()
+                    $("#chat-textarea").val("")
+                    return false;
+                }
+            });
+            $('#nav-friend>a').click()
+            
         });
 
     </script>
@@ -227,152 +777,255 @@
     <div class="main-header">
         <div class="container">
         <h1 class="lead text-center">
-            Welcome, {{ db.user_nickname(id) }}
+            Welcome, [[db.user_nickname(id)]]
         </h1>
         </div>
     </div>
-	<div id="wrap">
-	    <div id="main-container">
-    		<div id="main-panel" class="my-panel main-panel">
-    		    <div id="main-panelbody-container" class="panel-body-container" style="bottom: 50px">
-    		        <div id="main-panelbody" class="tab-content panel-body">
-        		        <div role="tabpanel" class="tab-pane my-panel" id="session-panel">
-        		            <header id="session-panelheader">
-        		                <h1>
-        		                    Chats
-        		                </h1>
-        		            </header>
-        		            <div id="session-panelbody-container" class="panel-body-container" style="top: 45px">
-        		            <div id="session-panelbody" class="panel-body">
-        		                <div id="session-scrollarea" class="scrollarea">
-        		                    <ul id="session-list" class="session-list" style="padding-left: 1em">
-        		                    </ul>
-        		                </div>
-        		            </div>
-        		            </div>
+    <div id="popover-mask" class="hover-mask">
+    </div>
+    <div id="wrap">
+        <div id="main-container">
+            <div id="main-panel" class="my-panel main-panel">
+                <div id="main-panelbody-container" class="panel-body-container">
+                    <div id="main-panelbody" class="tab-content panel-body">
+                        <div role="tabpanel" class="tab-pane my-panel" id="session-panel">
+                            <header id="session-panelheader">
+                                <h1>
+                                    Chats
+                                </h1>
+                            </header>
+                            <div id="" class="panel-body-container" style="">
+                            <div id="session-panelbody" class="panel-body" ng-controller="sessionPanelController">
+                                <div id="session-scrollarea" class="scrollarea scrollable">
+                                    <ul id="session-list" class="session-list group-list list-group">
+                                        <li ng-attr-id="{{ 'friend-id-' + session_id }}" class="list-group-item session-item" ng-repeat="session_id in sessionList">
+                                            <p style="display: none">
+                                            {{ friendList[session_id].user_nickname }}
+                                            </p>
+                                            <div class="pull-left unread-icon" ng-style="{ 'display': sessionContent[session_id].unread === true ? 'block' : 'none'}">
+                                            <span class="glyphicon glyphicon-star"> </span>
+                                            </div>
+                                            <p>
+                                            {{ friendList[session_id].user_nickname }}
+                                            </p>
+                                            <p style="text-overflow: ellipsis; white-space: nowrap; overflow: hidden; color: gray; font-size: 0.8em">
+                                            {{ sessionContent[session_id].content.slice(-1)[0].message }}
+                                            </p>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            </div>
                         </div>
-        		        <div role="tabpanel" class="tab-pane my-panel" id="contact-panel">
-        		            <header id="contact-panelheader">
-            		            <button id="nullbutton" class="button-left" style="opacity:0 !important">
-            		                <span>
-            		                    NULL
-            		                </span>
-            		            </button>
-            		            <h1>
-            		                Contact
-            		            </h1>
-            		            <button id="addcontact" class="button-right btn btn-info">
-            		                <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-            		            </button>
-        		            </header>
-        		            <div id="contact-panelbody-container" class="panel-body-container" style="top: 45px">
-        		            <div id="contact-panelbody" class="panel-body">
-        		                <div id="contact-scrollarea" class="scrollarea">
-                                    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-                                      <div class="panel panel-default">
-                                        <div class="panel-heading" role="tab" id="headingOne">
-                                          <h4 class="panel-title">
-                                            <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-                                              Collapsible Group Item #1
-                                            </a>
-                                          </h4>
+                        <div role="tabpanel" class="tab-pane my-panel" id="friend-panel">
+                            <header id="friend-panelheader">
+                                <button id="addgroup" class="button-left mybtn btn btn-info">
+                                    <span class="glyphicon glyphicon-plus"></span>
+                                </button>
+                                <h1>
+                                    Contacts
+                                </h1>
+                                <button id="addfriend" class="button-right mybtn btn btn-info">
+                                    <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                                </button>
+                            </header>
+                            <div id="friend-panelbody-container" class="panel-body-container">
+                            <div id="friend-panelbody" class="panel-body" ng-controller="friendGroupListController">
+                                <div id="friend-scrollarea" class="scrollarea scrollable">
+                                    <div class="panel panel-info" ng-repeat="friendGroup in friendGroupList">
+                                        <div class="panel-heading" role="tab" ng-attr-id="{{ 'heading-' + friendGroup.group_id}}">
+                                            <h4 class="panel-title">
+                                                <a role="button" data-toggle="collapse" ng-attr-href="{{ '#collapse' + friendGroup.group_id}}" aria-expanded="false" ng-attr-aria-controls="{{ 'collapse' + friendGroup.group_id}}">
+                                                    {{ friendGroup.group_name }}
+                                                </a>
+                                                <span>
+                                                </span>
+                                                <span style="float: right">
+                                                    &nbsp;&nbsp;&nbsp;
+                                                    {{ friendGroup.friend_online_count }} / {{friendGroup.friend_count}}
+                                                </span>
+                                                <button id="delgroup" ng-attr-del-id="{{friendGroup.group_id}}" class="del-btn">
+                                                    del
+                                                </button>
+                                            </h4>
                                         </div>
-                                        <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
-                                          <div class="panel-body">
-                                          hello1
-                                          </div>
+                                        <div ng-attr-id="{{ 'collapse' + friendGroup.group_id}}" class="panel-collapse collapse in" role="tabpanel" ng-attr-aria-labelledby="{{ 'heading-' + friendGroup.group_id}}">
+                                            <div class="panel-body panel-footer">
+                                                <ul ng-attr-id="{{ 'friendgroup-body-' + friendGroup.group_id }}" class="group-list list-group">
+                                                    <li ng-attr-id="{{ 'friend-id-' + friend }}" class="list-group-item" ng-repeat="friend in friendGroup.friendlist">
+                                                        <span> {{ friendList[friend].user_nickname }}</span>
+                                                        <span style="font-size: 0.8em; transform: translate(0, 10%); float: right"> {{ friendList[friend].user_isonline }} </span>
+                                                    </li>
+                                                </ul>
+                                            </div>
                                         </div>
-                                      </div>
-                                      <div class="panel panel-default">
-                                        <div class="panel-heading" role="tab" id="headingTwo">
-                                          <h4 class="panel-title">
-                                            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                              Collapsible Group Item #2
-                                            </a>
-                                          </h4>
-                                        </div>
-                                        <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
-                                          <div class="panel-body">
-                                          hello2
-                                          </div>
-                                        </div>
-                                      </div>
-                                      <div class="panel panel-default">
-                                        <div class="panel-heading" role="tab" id="headingThree">
-                                          <h4 class="panel-title">
-                                            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                                              Collapsible Group Item #3
-                                            </a>
-                                          </h4>
-                                        </div>
-                                        <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
-                                          <div class="panel-body">
-                                              hello3
-                                          </div>
-                                        </div>
-                                      </div>
                                     </div>
-        		                </div>
-        		            </div>
-        		            </div>
+                                </div>
+                            </div>
+                            </div>
                         </div>
-    		        </div>
-    		    </div>
-    		    <footer id="main-panelfooter">
-    		        <nav id="main-nav">
-    		            <ul id="nav-tab" class="nav nav-tabs nav-justified">
-    		                <li id="nav-session">
-    		                    <a data-toggle="tab" role="tab" aria-controls="session-panel" href="#session-panel">
-        		                    <span>Chats</span>
-    		                    </a>
-    		                </li>
-    		                <li id="nav-contact">
-    		                    <a data-toggle="tab" role="tab" aria-controls="contact-panel" href="#contact-panel">
-        		                    <span>Contacts</span>
-    		                    </a>
-    		                </li>
-    		            </ul>
-    		        </nav>
-    		    </footer>
-    		</div>
-	    </div>
-		<div id="container" style="display: block">
-		    <div id="chat-panel" class="my-panel chat-panel" style="background: aliceblue;">
-    			<header id="chat-panelheader">
-    			    <button id="close-panel" class="button-left">
-    			        <span class="glyphicon glyphicon-chevron-left"> </span>
-    			    </button>
-    				<h1 id="contact-name">
-        				NULL
-                    </h1> 
-    				<button id="delete-contact" class="button-right">
-    				    <span class="glyphicon glyphicon-remove"> </span>
-    				</button>
-    			</header>
-    			<div id="chat-panelbody-container" class="panel-body-container" style="top: 45px; bottom: 50px; overflow: hidden;">
-    			    <div id="chat-panelbody">
-        		        <div id="contact-scrollarea" class="scrollarea">
-        			        <ul id="chat-list" class="chat-list" style="padding-left: 2em">
-        			        </ul>
-        		        </div>
-    			    </div>
-    			</div>
-    			<footer id="chat-panelfooter" class="chat-toolbar-footer">
-    			    <div id="chat-toolbar" class="chat-toolbar">
-        				<textarea id="chat-textarea" class="chat-textarea"></textarea>
-                        <button id="send-button" class="btn btn-primary" style="width=56px; display: block !important;">Send</button>
-    			    </div>
-    				</button>
-    			</footer>
+                    </div>
+                </div>
+                <footer id="main-panelfooter">
+                    <nav id="main-nav">
+                        <ul id="nav-tab" class="nav nav-tabs nav-justified">
+                            <li id="nav-session">
+                                <a data-toggle="tab" role="tab" aria-controls="session-panel" href="#session-panel">
+                                    <span>Chats</span>
+                                </a>
+                            </li>
+                            <li id="nav-friend">
+                                <a data-toggle="tab" role="tab" aria-controls="friend-panel" href="#friend-panel">
+                                    <span>Contacts</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </footer>
             </div>
-		</div>
-	</div>
-	<div id="searchContact">
-	    <div id="searchResult">
-	    </div>
-	</div>
-	<div id="addGroupBox">
-	</div>
+        </div>
+        <div id="container" style="display: block">
+            <div id="chat-panel" class="my-panel chat-panel" style="background: aliceblue; ">
+                <header id="chat-panelheader" style="">
+                    <button id="close-chat-panel" class="button-left mybtn btn btn-default">
+                        <span class="glyphicon glyphicon-chevron-left"> </span>
+                    </button>
+                    <h1 id="friend-name">
+                        NULL
+                    </h1> 
+                    <div class="dropdown">
+                        <button id="dLabel" class="button-right mybtn btn btn-info" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="glyphicon glyphicon-chevron-down"></span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dLabel">
+                            <li id="delfriend" class="dropdown-item" style="border-bottom: 1px solid">
+                                Delete&nbsp;Contact
+                            </li>
+                            <li id="changegroup" class="dropdown-item">
+                                Change&nbsp;Group
+                            </li>
+                        </ul>
+                    </div>                    
+                </header>
+                <div id="chat-panelbody-container" class="panel-body-container" style="overflow: hidden;">
+                    <div id="chat-panelbody">
+                        <div id="chat-scrollarea" class="scrollarea scrollable">
+                            <ul id="chat-content-list" class="chat-content-list" style="padding-left: 1em; padding-right: 1em" ng-controller="chatPanelController">
+                                <li ng-repeat="chatContent in chatContents">
+                                    <p class="chat-time" ng-style="{{ chatContent.self === undefined && {'color': '#00764a'} || chatContent.self === true && {'color': '#4487b0'} }}"> {{ chatContent.time }} </p>
+                                    <p class="chat-content"> {{ chatContent.message }} </p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <footer id="chat-panelfooter" class="chat-toolbar-footer">
+                    <div id="chat-toolbar" class="chat-toolbar">
+                        <textarea id="chat-textarea" class="chat-textarea" onfocus="window.activeobj=this;this.clock=setInterval(function(){activeobj.style.height=activeobj.scrollHeight+'px';$('#chat-panelbody-container').css('bottom', $('#chat-panelfooter').height()+'px');},200);"></textarea>
+                        <button id="send-message-button" class="mybtn btn btn-primary"><span>Send</span></button>
+                    </div>
+                    </button>
+                </footer>
+            </div>
+        </div>
+    </div>
+    <div id="search-friend-panel" class="hover-panel">
+        <div class="panel-wrapper" style="padding: 1em; display: -webkit-box; -webkit-box-flex: 1">
+            <input type="text" id="search-friend-input" class="" placeholder="User email">
+            <button id="addfriend-search" class="button-right mybtn btn btn-info" style="margin-top: 4px">
+                <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+            </button>
+        </div>
+        <div id="search-friend-result-wrapper" class="search-friend-result-wrapper" style="padding: 1em;">
+            <p id="search-friend-result"> OrpineX </p>
+            <div class="" style="display: -webkit-box; -webkit-box-flex: 1; position: relative; margin-right: 20px">
+                <p class="add-to-label"  style="">Add to: &nbsp;&nbsp;</label>
+                <div class="" style="padding-top: 5px">
+                    <select id="add-to-friendgroup" style="width: auto" class="form-control" ng-controller="friendGroupListController">
+                        <option ng-repeat="friendGroup in friendGroupList" ng-attr-value="{{ friendGroup.group_id }}">
+                            {{ friendGroup.group_name }}
+                        </option>
+                    </select> 
+                </div>
+            </div>
+            <button id="addfriend-confirm" class="button-right mybtn btn btn-info" style="margin-top: 4px; border: 0">
+                <span class="glyphicon glyphicon-plus" aria-hidden="true" style="padding-top: 5px;"></span>
+            </button>                
+        </div>
+    </div>
+    <div id="add-group-panel" class="hover-panel">
+        <div class="panel-wrapper" style="padding: 1em; display: -webkit-box; -webkit-box-flex: 1">
+            <input type="text" id="add-group-input" class="" placeholder="Group name">
+            <button id="addgroup-confirm" class="button-right mybtn btn btn-info" style="margin-top: 4px">
+                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+            </button>
+        </div>
+    </div>
+    <div id="del-friend-confirm-panel" class="hover-panel delete-panel">
+        <div class="panel panel-danger" style="margin-bottom: 0">
+            <div class="panel-heading lead center" style="margin-bottom: 0">Delete Confirm</div>
+                <div class="panel-body">
+                    <h2 style="text-align: center">
+                    Do you want to delete contact: <span id="delete-friend-name"> id </span>?
+                    <br/>
+                    <button id="delfriend-confirm" class="mybtn btn btn-danger btn-lg">
+                        Yes
+                    </button>
+                    </h2>
+                </div>
+        </div>
+    </div>
+    <div id="del-group-confirm-panel" class="hover-panel delete-panel">
+        <div class="panel panel-danger" style="margin-bottom: 0">
+            <div class="panel-heading lead center" style="margin-bottom: 0">Delete Confirm</div>
+                <div class="panel-body">
+                    <h2 style="text-align: center">
+                    <div id = "delgroupfailed" style="display:none" class="text-center alert alert-danger" role="alert">
+                        Invalid target group!
+                    </div>
+                    Do you want to delete group: <br/> 
+                    <span id="delete-group-name"> id </span>?<br/>
+                    Please choose a group<br/> 
+                    you want to merge with: 
+                    <center>
+                    <div class="" style="padding-top: 5px">
+                        <select id="del-friendgroup" class="form-control" ng-controller="friendGroupListController">
+                            <option ng-repeat="friendGroup in friendGroupList" ng-attr-value="{{ friendGroup.group_id }}">
+                                {{ friendGroup.group_name }}
+                            </option>
+                        </select>
+                    </div>
+                    </center>
+                    <button id="delgroup-confirm" class="mybtn btn btn-danger btn-lg">
+                        Yes
+                    </button>
+                    </h2>
+                </div>
+        </div>
+    </div>
+    <div id="change-group-confirm-panel" class="hover-panel delete-panel">
+        <div class="panel panel-info" style="margin-bottom: 0">
+<!--             <div class="panel-heading lead center" style="margin-bottom: 0">Delete Confirm</div> -->
+                <div class="panel-body">
+                    <h2 style="text-align: center">
+                    Change <span id="change-friend-name"> id </span>'s group from <span id="change-group-name"> id </span> to: <br/>
+                    <center>
+                    <div class="" style="padding-top: 5px">
+                        <select id="change-friendgroup" class="form-control" ng-controller="friendGroupListController">
+                            <option ng-repeat="friendGroup in friendGroupList" ng-attr-value="{{ friendGroup.group_id }}">
+                                {{ friendGroup.group_name }}
+                            </option>
+                        </select>
+                    </div>
+                    </center>
+                    <button id="changegroup-confirm" class="mybtn btn btn-danger btn-lg">
+                        Yes
+                    </button>
+                    </h2>
+                </div>
+        </div>
+    </div>
+    
 </body>
 
 </html>
