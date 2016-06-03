@@ -52,6 +52,7 @@ def refresh_friendlist(msg):
     db.user_online(current_user.get_id(), set = True)
     emit('receive friendgrouplist', db.user_friendgroup(current_user.get_id()))
 
+
 @socketio.on('refresh friendlist', namespace = '/message')
 def refresh_friendlist(msg):
     db.user_online(current_user.get_id(), set = True)

@@ -616,6 +616,21 @@
                     scope.refreshFriendGroupList(msg)
                 })
             });
+            socket.on('refresh online status', function(msg) {
+                friend_list[msg.user_id] = msg.user_isonline
+                for (i in friend_group_list) {
+                    friend_group_list[i].friend_online_count = 0
+                    for (j in friend_group_list[i].friendlist) {
+                        if (friend_group_list[i].friendlist[j] == true) {
+                            friend_group_list[i].friend_online_count += 1
+                        }
+                    }
+                }
+                var scope = angular.element("#friend-panelbody").scope()
+                scope.$apply(function() {
+                    scope.refreshFriendGroupList(msg)
+                })                
+            })
             $('#nav-session a').click(function (e) {
                 e.preventDefault()
                 $(this).tab('show')
